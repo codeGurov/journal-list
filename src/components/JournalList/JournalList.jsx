@@ -1,13 +1,13 @@
 import CardButton from "../CardButton/CardButton";
 import JournalItem from "../JournalItem/JournalItem";
-import "./JournalList.css";
+import styles from "./JournalList.module.css";
 
 const JournalList = ({ items }) => {
   if (items.length === 0) {
     return <p>Записей пока нет, создайте новую.</p>;
   }
   return (
-    <div className="journal-list">
+    <div className={styles["journal-list"]}>
       {items.map((item) => {
         return (
           <CardButton key={item.id}>

@@ -1,7 +1,11 @@
-import "./Button.css";
+import styles from "./Button.module.css";
 
 const Button = ({ text = "Текст кнопки" }) => {
-  return <button className="button accent">{text}</button>;
+  return (
+    <button className={`${styles["button"]} ${styles["accent"]}`}>
+      {text}
+    </button>
+  );
 };
 
 export default Button;
