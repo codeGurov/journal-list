@@ -1,57 +1,37 @@
 import styles from "./JournalForm.module.css";
 import Button from "./../Button/Button";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import cn from "classnames";
 import { Calendar, Tag, Archive } from "lucide-react";
-
-const INITIAL_STATE = {
-  title: true,
-  date: true,
-  text: true,
-};
+import { formReducer, INITIAL_STATE } from "./JournalForm.state";
 
 const JournalForm = ({ onSubmit }) => {
-  const [formValid, setFormValid] = useState(INITIAL_STATE);
+  const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
+  const { isValid, isFormReadyToSubmit, values } = formState;
 
   useEffect(() => {
     let timerId;
-    if (!formValid.date || !formValid.text || !formValid.title) {
+    if (!isValid.date || !isValid.text || !isValid.title) {
       timerId = setTimeout(() => {
-        setFormValid(INITIAL_STATE);
+        dispatchForm({ type: "RESET_VALIDITY" });
       }, 2000);
     }
     return () => {
       clearTimeout(timerId);
     };
-  }, [formValid]);
+  }, [isValid]);
+
+  useEffect(() => {
+    if (isFormReadyToSubmit) {
+      onSubmit(values);
+    }
+  }, [isFormReadyToSubmit]);
 
   const addJournalItem = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
-    let isFormValide = true;
-    if (!formProps.title?.trim().length) {
-      setFormValid((prev) => ({ ...prev, title: false }));
-      isFormValide = false;
-    } else {
-      setFormValid((prev) => ({ ...prev, title: true }));
-    }
-    if (!formProps.text?.trim().length) {
-      setFormValid((prev) => ({ ...prev, text: false }));
-      isFormValide = false;
-    } else {
-      setFormValid((prev) => ({ ...prev, text: true }));
-    }
-    if (!formProps.date) {
-      setFormValid((prev) => ({ ...prev, date: false }));
-      isFormValide = false;
-    } else {
-      setFormValid((prev) => ({ ...prev, date: true }));
-    }
-    if (!isFormValide) {
-      return;
-    }
-    onSubmit(formProps);
+    dispatchForm({ type: "SUBMIT", payload: formProps });
   };
 
   return (
@@ -59,7 +39,7 @@ const JournalForm = ({ onSubmit }) => {
       <div className={styles["form-row"]}>
         <input
           className={cn(styles["input-title"], {
-            [styles["invalid"]]: !formValid.title,
+            [styles["invalid"]]: !isValid.title,
           })}
           type="text"
           name="title"
@@ -74,7 +54,7 @@ const JournalForm = ({ onSubmit }) => {
         </label>
         <input
           className={cn(styles["input"], {
-            [styles["invalid"]]: !formValid.date,
+            [styles["invalid"]]: !isValid.date,
           })}
           type="date"
           name="date"
@@ -93,7 +73,7 @@ const JournalForm = ({ onSubmit }) => {
       <textarea
         name="text"
         className={cn(styles["input"], {
-          [styles["invalid"]]: !formValid.text,
+          [styles["invalid"]]: !isValid.text,
         })}
         cols={30}
         rows={10}
