@@ -4,6 +4,7 @@ import { useEffect, useReducer, useRef } from "react";
 import cn from "classnames";
 import { Calendar, Tag, Archive } from "lucide-react";
 import { formReducer, INITIAL_STATE } from "./JournalForm.state";
+import Input from "../Input/Input";
 
 const JournalForm = ({ onSubmit }) => {
   const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
@@ -61,15 +62,14 @@ const JournalForm = ({ onSubmit }) => {
   return (
     <form className={styles["journal-form"]} onSubmit={addJournalItem}>
       <div className={styles["form-row"]}>
-        <input
-          className={cn(styles["input-title"], {
-            [styles["invalid"]]: !isValid.title,
-          })}
+        <Input
           type="text"
           name="title"
           ref={titleRef}
           onChange={onChange}
           value={values.title}
+          appearence="title"
+          isValid={isValid.title}
         />
         <Archive size={32} />
       </div>
@@ -79,16 +79,14 @@ const JournalForm = ({ onSubmit }) => {
           <Calendar size={18} />
           <span>Дата</span>
         </label>
-        <input
-          className={cn(styles["input"], {
-            [styles["invalid"]]: !isValid.date,
-          })}
+        <Input
           type="date"
           name="date"
           id="date"
           ref={dateRef}
           value={values.date}
           onChange={onChange}
+          isValid={isValid.date}
         />
       </div>
 
@@ -97,13 +95,12 @@ const JournalForm = ({ onSubmit }) => {
           <Tag size={18} />
           <span>Метки</span>
         </label>
-        <input
+        <Input
           type="text"
           name="tag"
           id="tag"
           onChange={onChange}
           value={values.tag}
-          className={styles["input"]}
         />
       </div>
 

@@ -1,0 +1,20 @@
+.input {
+  width: 100%;
+  font-family: "Source Sans 3", sans-serif;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border-bottom: 1px solid #323232;
+}
+
+.input-title {
+  font-size: 32px;
+}
+
+.invalid {
+  border: 1px solid red !important;
+  background: rgb(68, 6, 6) !important;
+}
