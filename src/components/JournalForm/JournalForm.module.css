@@ -50,3 +50,14 @@ textarea {
   border: 1px solid red !important;
   background: rgb(68, 6, 6) !important;
 }
+
+.delete {
+  padding: 5px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.delete:hover {
+  background: #323232;
+}
