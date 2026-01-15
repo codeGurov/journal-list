@@ -1,10 +1,11 @@
 import styles from "./JournalForm.module.css";
 import Button from "./../Button/Button";
-import { useEffect, useReducer, useRef } from "react";
+import { useContext, useEffect, useReducer, useRef } from "react";
 import cn from "classnames";
 import { Calendar, Tag, Archive } from "lucide-react";
 import { formReducer, INITIAL_STATE } from "./JournalForm.state";
 import Input from "../Input/Input";
+import { UserContext } from "../../context/user.context";
 
 const JournalForm = ({ onSubmit }) => {
   const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
@@ -12,6 +13,7 @@ const JournalForm = ({ onSubmit }) => {
   const titleRef = useRef();
   const dateRef = useRef();
   const textRef = useRef();
+  const { userId } = useContext(UserContext);
 
   const focusError = (isValid) => {
     switch (true) {
@@ -61,6 +63,7 @@ const JournalForm = ({ onSubmit }) => {
 
   return (
     <form className={styles["journal-form"]} onSubmit={addJournalItem}>
+      {userId}
       <div className={styles["form-row"]}>
         <Input
           type="text"

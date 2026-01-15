@@ -3,9 +3,10 @@ import Header from "./components/Header/Header";
 import JournalAddButton from "./components/JournalAddButton/JournalAddButton";
 import JournalForm from "./components/JournalForm/JournalForm";
 import JournalList from "./components/JournalList/JournalList";
+import { UserContextProvider } from "./context/user.context";
+import { useLocalStorage } from "./hooks/use-localstorage.hook";
 import Body from "./layouts/Body/Body";
 import LeftPanel from "./layouts/LeftPanel/LeftPanel";
-import { useLocalStorage } from "./hooks/use-localstorage.hook";
 
 function mapItems(items) {
   if (!items) {
@@ -18,7 +19,7 @@ function mapItems(items) {
 }
 
 function App() {
-  const [items, setItems] = useLocalStorage('data');
+  const [items, setItems] = useLocalStorage("data");
 
   const addItem = (item) => {
     setItems([
@@ -31,16 +32,18 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <LeftPanel>
-        <Header />
-        <JournalAddButton />
-        <JournalList items={mapItems(items)} />
-      </LeftPanel>
-      <Body>
-        <JournalForm onSubmit={addItem} />
-      </Body>
-    </div>
+    <UserContextProvider>
+      <div className="app">
+        <LeftPanel>
+          <Header />
+          <JournalAddButton />
+          <JournalList items={mapItems(items)} />
+        </LeftPanel>
+        <Body>
+          <JournalForm onSubmit={addItem} />
+        </Body>
+      </div>
+    </UserContextProvider>
   );
 }
 
